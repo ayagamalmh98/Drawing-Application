@@ -19,10 +19,11 @@ import eg.edu.alexu.csd.oop.draw.Shapes.Rectangle;
 
 
 public class Draw implements DrawingEngine {
-	
+
+  
 	private List<Class<? extends Shape>> supportedShapes;
-    public Stack<ArrayList<Shape>> undoStack, redoStack;
-    public ArrayList<Shape> myShapes;
+    public Stack<ArrayList<Drawshape>> undoStack, redoStack;
+    public ArrayList<Drawshape> myShapes;
     public ArrayList<Shape> pluginShapes;
 	private Panel panel;
     
@@ -50,7 +51,7 @@ public class Draw implements DrawingEngine {
 	
 	@Override
 	public void addShape(Shape shape) {
-		this.myShapes.add(shape);
+		this.myShapes.add((Drawshape) shape);
 	}
 
 	@Override
@@ -72,17 +73,17 @@ public class Draw implements DrawingEngine {
 	}
 	
 	public void updateUndoStack() {
-        ArrayList<Shape> u = new ArrayList<>();
+        ArrayList<Drawshape> u = new ArrayList<>();
         myShapes.forEach((p) -> {
             try {
-				u.add((Shape) p.clone());
+				u.add((Drawshape) p.clone());
 			} catch (CloneNotSupportedException e) {
 				e.printStackTrace();
 			}
         });
-        undoStack.push((ArrayList<Shape>) u);
+        undoStack.push((ArrayList<Drawshape>) u);
     }
-	
+	/*
 	public void updateRedoStack() {
         ArrayList<Shape> u = new ArrayList<>();
         myShapes.forEach((p) -> {
@@ -94,10 +95,11 @@ public class Draw implements DrawingEngine {
         });
         redoStack.push((ArrayList<Shape>) u);
     }
+	*/
 	
 	public Drawshape findShape(int x, int y, boolean remove) {
-        for (Shape p : myShapes) {
-            if (p.c) {
+        for (Drawshape p : myShapes) {
+            if (p.contains(x, y)) {
                 if (remove) {
                     updateUndoStack();// done
                     myShapes.remove(p);
@@ -111,23 +113,40 @@ public class Draw implements DrawingEngine {
 
 	@Override
 	public void undo() {
-		// TODO Auto-generated method stub
+		 if (!redoStack.isEmpty()) {
+	            updateUndoStack();
+	            myShapes = redoStack.pop();
+	            panel.repaint();
+	        }
 
 	}
+	 
+	    public void clear() {
+	        myShapes.clear();
+	        undoStack.clear();
+	        redoStack.clear();
+	        panel.repaint();
+	    }
 
 	@Override
 	public void redo() {
-		// TODO Auto-generated method stub
+		  if (!redoStack.isEmpty()) {
+	            updateUndoStack();
+	            myShapes = redoStack.pop();
+	            panel.repaint();
+	        }
 
 	}
 
 	@Override
 	public void save(String path) {
+		 
 	
 	}
 
 	@Override
 	public void load(String path) {
+		
 		
 	}
 

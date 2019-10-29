@@ -23,7 +23,7 @@ public class Ellipse extends Drawshape{
 	public void draw(Graphics g2) {
 		Graphics2D g = (Graphics2D) g2;
 		shape = new Ellipse2D.Double(Math.min((int)x1, (int)x2), Math.min((int)y1, (int)y2),
-        		Math.abs((int)x1- (int)x2), Math.abs((int)y1- (int)y2));
+				Math.abs((int)x1- (int)x2), Math.abs((int)y1- (int)y2));
 
 		g.setColor(getFillColor());
 		g.fill(shape);
@@ -31,6 +31,11 @@ public class Ellipse extends Drawshape{
 		g.setColor(getColor());
 		g.draw(shape);
 	}
+	
+	public boolean contains(int x, int y) {
+        return shape.contains(x, y);
+    }
+
 
 
 	@Override
