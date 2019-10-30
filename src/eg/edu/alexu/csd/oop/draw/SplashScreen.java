@@ -30,7 +30,7 @@ public class SplashScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         jProgressBar1 = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+     /*   jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -62,7 +62,7 @@ public class SplashScreen extends javax.swing.JFrame {
         jLabel7.setText("- Amir Rashed");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/paint/views/paintboy.png"))); // NOI18N
-
+*/
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(

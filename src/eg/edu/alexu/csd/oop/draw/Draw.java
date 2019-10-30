@@ -22,39 +22,38 @@ import eg.edu.alexu.csd.oop.draw.Shapes.Rectangle;
 
 
 public class Draw implements DrawingEngine {
-	   private  ILoadSave jsonSaver;
-	    private  ILoadSave xmlSaver;
-  
-	private List<Class<? extends Shape>> supportedShapes;
-    public Stack<ArrayList<Drawshape>> undoStack, redoStack;
-    public ArrayList<Drawshape> myShapes;
-    public ArrayList<Shape> pluginShapes;
-	private Panel panel;
-    
-    public Draw(Panel panel) {
-        this.panel = panel;
-      
-        this.xmlSaver = new XML();
-        this.undoStack = new Stack<>();
-        this.redoStack = new Stack<>();
-        this.myShapes = new ArrayList<>();
-        this.pluginShapes = new ArrayList<>();
-    }
+	private  ILoadSave jsonSaver;
+	private  ILoadSave xmlSaver;
 
-	
+	private List<Class<? extends Shape>> supportedShapes;
+	public Stack<ArrayList<Drawshape>> undoStack, redoStack;
+	public ArrayList<Drawshape> myShapes;
+	public ArrayList<Shape> pluginShapes;
+	private Panel panel;
+
+	public Draw(Panel panel) {
+		this.panel = panel;
+		this.xmlSaver = new XML();
+		this.undoStack = new Stack<>();
+		this.redoStack = new Stack<>();
+		this.myShapes = new ArrayList<>();
+		this.pluginShapes = new ArrayList<>();
+	}
+
+
 	@Override
 	public void refresh(Graphics canvas) {
 		myShapes.forEach((p) -> {
-            p.draw(canvas);
-        });
+			p.draw(canvas);
+		});
 
-        //draws the current Shape Object if it is not null
-        if (panel.currentShapeObject != null) {
-            panel.currentShapeObject.draw(canvas);
-        }
-    }
-	
-	
+		//draws the current Shape Object if it is not null
+		if (panel.currentShapeObject != null) {
+			panel.currentShapeObject.draw(canvas);
+		}
+	}
+
+
 	@Override
 	public void addShape(Shape shape) {
 		this.myShapes.add((Drawshape) shape);
@@ -63,115 +62,105 @@ public class Draw implements DrawingEngine {
 	@Override
 	public void removeShape(Shape shape) {
 		if (myShapes.contains(shape)) {
-            myShapes.remove(shape);
-        }
+			myShapes.remove(shape);
+		}
 	}
 
 	@Override
 	public void updateShape(Shape oldShape, Shape newShape) {
 		removeShape(oldShape);
-        addShape(newShape);
+		addShape(newShape);
 	}
 
 	@Override
 	public Shape[] getShapes() {
 		return (Shape[]) myShapes.toArray();
 	}
-	
+
 	public void updateUndoStack() {
-        ArrayList<Drawshape> u = new ArrayList<>();
-        myShapes.forEach((p) -> {
-            try {
+		ArrayList<Drawshape> u = new ArrayList<>();
+		myShapes.forEach((p) -> {
+			try {
 				u.add((Drawshape) p.clone());
 			} catch (CloneNotSupportedException e) {
 				e.printStackTrace();
 			}
-        });
-        undoStack.push((ArrayList<Drawshape>) u);
-    }
-	
+		});
+		undoStack.push((ArrayList<Drawshape>) u);
+	}
+
 	public void updateRedoStack() {
-        ArrayList<Drawshape> u = new ArrayList<>();
-        myShapes.forEach((p) -> {
-            try {
+		ArrayList<Drawshape> u = new ArrayList<>();
+		myShapes.forEach((p) -> {
+			try {
 				u.add((Drawshape) p.clone());
 			} catch (CloneNotSupportedException e) {
 				e.printStackTrace();
 			}
-        });
-        redoStack.push((ArrayList<Drawshape>) u);
-    }
-	
-	
+		});
+		redoStack.push((ArrayList<Drawshape>) u);
+	}
+
+
 	public Drawshape findShape(int x, int y, boolean remove) {
-        for (Drawshape p : myShapes) {
-            if (p.contains(x, y)) {
-                if (remove) {
-                	
-                	
-                	
-                    updateUndoStack();// done
-                    myShapes.remove(p);
-                }
-                return p;
-            }
-        }
-        return null;
-    }
+		for (Drawshape p : myShapes) {
+			if (p.contains(x, y)) {
+				if (remove) {
+					updateUndoStack();// done
+					myShapes.remove(p);
+				}
+				return p;
+			}
+		}
+		return null;
+	}
 
 
 	@Override
 	public void undo() {
-		 if (!redoStack.isEmpty()) {
-	            updateUndoStack();
-	            myShapes = redoStack.pop();
-	            panel.repaint();
-	        }
+		if (!undoStack.isEmpty()) {
+			updateUndoStack();
+			myShapes = undoStack.pop();
+			panel.repaint();
+		}
 
 	}
-	 
-	    public void clear() {
-	        myShapes.clear();
-	        undoStack.clear();
-	        redoStack.clear();
-	        panel.repaint();
-	    }
 
 	@Override
 	public void redo() {
-		  if (!redoStack.isEmpty()) {
-	            updateUndoStack();
-	            myShapes = redoStack.pop();
-	            panel.repaint();
-	        }
+		if (!redoStack.isEmpty()) {
+			updateUndoStack();
+			myShapes = redoStack.pop();
+			panel.repaint();
+		}
 
 	}
 
 	@Override
 	public void save(String path) {
-		   if (path.toLowerCase().endsWith(".xml")) {
-	            xmlSaver.Save(myShapes, path);
-	        } else {
-	            JOptionPane.showMessageDialog(null, "Invalid Save format.");
-	            throw new RuntimeException("Invalid format");
-	        }
-		 
-	
+		if (path.toLowerCase().endsWith(".xml")) {
+			xmlSaver.Save(myShapes, path);
+		} else {
+			JOptionPane.showMessageDialog(null, "Invalid Save format.");
+			throw new RuntimeException("Invalid format");
+		}
+
+
 	}
 
 	@Override
 	public void load(String path) {
-		 if (path.toLowerCase().endsWith(".json")) {
-	            myShapes = jsonSaver.Load(path);
-	        } else if (path.toLowerCase().endsWith(".xml")) {
-	            myShapes = xmlSaver.Load(path);
-	        } else {
-	            JOptionPane.showMessageDialog(null, "Invalid Save format.");
-	            throw new RuntimeException("Invalid format");
-	        }
-	        panel.repaint();
-		
-		
+		if (path.toLowerCase().endsWith(".json")) {
+			myShapes = jsonSaver.Load(path);
+		} else if (path.toLowerCase().endsWith(".xml")) {
+			myShapes = xmlSaver.Load(path);
+		} else {
+			JOptionPane.showMessageDialog(null, "Invalid Save format.");
+			throw new RuntimeException("Invalid format");
+		}
+		panel.repaint();
+
+
 	}
 
 
@@ -186,6 +175,6 @@ public class Draw implements DrawingEngine {
 		supportedShapes.add(Triangle.class);
 		return supportedShapes;
 	}
-	
-	
+
+
 }

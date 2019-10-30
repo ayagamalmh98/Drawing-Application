@@ -25,7 +25,6 @@ public class g extends JFrame {
         initComponents();
         Transparent = new Color(1f, 0f, 0f, .5f);
         panel = new Panel();
-
         Rectangle f = this.getBounds();
         panel.setBounds(f.x, 50, f.width, f.height);
         getContentPane().add(panel, BorderLayout.CENTER);
@@ -209,17 +208,6 @@ public class g extends JFrame {
         jToolBar1.add(jButton11);
 
 
-        
-        jButton8.setText(" New");
-        jButton8.setBorderPainted(false);
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton8);
-
-        
         jButton7.setText("Undo");
         jButton7.setBorderPainted(false);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -338,8 +326,6 @@ public class g extends JFrame {
         panel.myEngine.redo();
     }//GEN-LAST:event_jButton6ActionPerformed
 
-  
-
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         panel.setCurrentShapeType(ShapeTypes.Line);
     }//GEN-LAST:event_jButton4ActionPerformed
@@ -359,10 +345,6 @@ public class g extends JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         panel.setCurrentShapeType(ShapeTypes.Triangle);
     }//GEN-LAST:event_jButton5ActionPerformed
-
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        panel.myEngine.clear();
-    }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         ForeColor = JColorChooser.showDialog(null, "Please Choose your Border Color", ForeColor);
@@ -441,13 +423,13 @@ public class g extends JFrame {
     }//GEN-LAST:event_undoBtnActionPerformed
 
     private void jMenu1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu1MouseClicked
-        if (panel.myEngine.undoStack.isEmpty()) {
+        if (panel.undoEmpty()) {
             undoBtn.setEnabled(false);
         } else {
             undoBtn.setEnabled(true);
         }
 
-        if (panel.myEngine.redoStack.isEmpty()) {
+        if (panel.redoEmpty()) {
             redoBtn.setEnabled(false);
         } else {
             redoBtn.setEnabled(true);
