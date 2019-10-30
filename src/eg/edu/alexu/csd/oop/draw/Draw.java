@@ -121,6 +121,11 @@ public class Draw implements DrawingEngine {
 	@Override
 	public void undo() {
 		if (!undoStack.isEmpty()) {
+			undo=undoStack.peek();
+			myShapes.remove(myShapes.size()-1);
+			panel.repaint();
+		}
+			/*
 			if(undot) {
 				updateUndoStack();
 				undot =false;
@@ -130,6 +135,7 @@ public class Draw implements DrawingEngine {
 			System.out.println(undoStack);
 			panel.repaint();
 		}
+		*/
 
 	}
 
