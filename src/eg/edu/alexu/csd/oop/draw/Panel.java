@@ -3,6 +3,7 @@ package eg.edu.alexu.csd.oop.draw;
 import eg.edu.alexu.csd.oop.draw.Shapes.Circle;
 import eg.edu.alexu.csd.oop.draw.Shapes.Ellipse;
 import eg.edu.alexu.csd.oop.draw.Shapes.Line;
+import eg.edu.alexu.csd.oop.draw.Shapes.Rectangle;
 import eg.edu.alexu.csd.oop.draw.Shapes.Square;
 import eg.edu.alexu.csd.oop.draw.Shapes.Triangle;
 import java.awt.Color;
@@ -67,7 +68,7 @@ public class Panel extends JPanel{
 		@Override
 		public void mousePressed(MouseEvent event) {
 			if (copying) {
-				copiedObject = myEngine.findShape(event.getX(), event.getY(), false);
+				copiedObject =  myEngine.findShape(event.getX(), event.getY(), false);
 				copying = false;
 				return;
 			}
@@ -91,7 +92,7 @@ public class Panel extends JPanel{
 				copiedObject = null;
 			}
 			if (moving || resize) {
-				currentShapeObject = myEngine.findShape(event.getX(), event.getY(), true);
+				currentShapeObject =  myEngine.findShape(event.getX(), event.getY(), true);
 				return;
 			}
 			if (deleting) {
@@ -124,8 +125,11 @@ public class Panel extends JPanel{
 				if (!resize) {
 					myEngine.updateUndoStack();
 				}
+				
 				currentShapeObject.setX2(event.getX());
 				currentShapeObject.setY2(event.getY());
+
+				
 
 			}
 			myEngine.addShape(currentShapeObject); //addFront currentShapeObject onto myShapes
@@ -134,12 +138,14 @@ public class Panel extends JPanel{
 			repaint();
 
 		}
+		
 
 		@Override
 		public void mouseDragged(MouseEvent event) {
 			if (currentShapeObject == null) {
 				return;
 			}
+			
 			if (moving) {
 				int new_x = event.getX(), new_y = event.getY();
 				int to_add_X = new_x - currentShapeObject.getX1();
@@ -151,8 +157,10 @@ public class Panel extends JPanel{
 				repaint();
 				return;
 			}
+			
 			currentShapeObject.setX2(event.getX());
 			currentShapeObject.setY2(event.getY());
+			currentShapeObject = (Drawshape) ShapeFactory.getInstancee(currentShapeObject,currentShapeType, event.getX(), event.getY());
 			repaint();
 		}
 	}

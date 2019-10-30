@@ -15,11 +15,15 @@ import eg.edu.alexu.csd.oop.draw.Shapes.Ellipse;
 import eg.edu.alexu.csd.oop.draw.Shapes.Line;
 import eg.edu.alexu.csd.oop.draw.Shapes.Square;
 import eg.edu.alexu.csd.oop.draw.Shapes.Triangle;
+
+import eg.edu.alexu.csd.oop.draw.XML;
+import eg.edu.alexu.csd.oop.draw.ILoadSave;
 import eg.edu.alexu.csd.oop.draw.Shapes.Rectangle;
 
 
 public class Draw implements DrawingEngine {
-
+	   private  ILoadSave jsonSaver;
+	    private  ILoadSave xmlSaver;
   
 	private List<Class<? extends Shape>> supportedShapes;
     public Stack<ArrayList<Drawshape>> undoStack, redoStack;
@@ -29,6 +33,8 @@ public class Draw implements DrawingEngine {
     
     public Draw(Panel panel) {
         this.panel = panel;
+      
+        this.xmlSaver = new XML();
         this.undoStack = new Stack<>();
         this.redoStack = new Stack<>();
         this.myShapes = new ArrayList<>();
@@ -83,24 +89,27 @@ public class Draw implements DrawingEngine {
         });
         undoStack.push((ArrayList<Drawshape>) u);
     }
-	/*
+	
 	public void updateRedoStack() {
-        ArrayList<Shape> u = new ArrayList<>();
+        ArrayList<Drawshape> u = new ArrayList<>();
         myShapes.forEach((p) -> {
             try {
-				u.add((Shape) p.clone());
+				u.add((Drawshape) p.clone());
 			} catch (CloneNotSupportedException e) {
 				e.printStackTrace();
 			}
         });
-        redoStack.push((ArrayList<Shape>) u);
+        redoStack.push((ArrayList<Drawshape>) u);
     }
-	*/
+	
 	
 	public Drawshape findShape(int x, int y, boolean remove) {
         for (Drawshape p : myShapes) {
             if (p.contains(x, y)) {
                 if (remove) {
+                	
+                	
+                	
                     updateUndoStack();// done
                     myShapes.remove(p);
                 }
@@ -140,12 +149,27 @@ public class Draw implements DrawingEngine {
 
 	@Override
 	public void save(String path) {
+		   if (path.toLowerCase().endsWith(".xml")) {
+	            xmlSaver.Save(myShapes, path);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Invalid Save format.");
+	            throw new RuntimeException("Invalid format");
+	        }
 		 
 	
 	}
 
 	@Override
 	public void load(String path) {
+		 if (path.toLowerCase().endsWith(".json")) {
+	            myShapes = jsonSaver.Load(path);
+	        } else if (path.toLowerCase().endsWith(".xml")) {
+	            myShapes = xmlSaver.Load(path);
+	        } else {
+	            JOptionPane.showMessageDialog(null, "Invalid Save format.");
+	            throw new RuntimeException("Invalid format");
+	        }
+	        panel.repaint();
 		
 		
 	}

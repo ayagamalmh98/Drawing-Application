@@ -95,6 +95,11 @@ public abstract class Drawshape implements Shape {
     public void setY2(int y2) {
         this.y2 = y2;
     }
+
+    public ShapeTypes getShapeType() {
+        return this.myShapeType;
+    }
+    
 	
 	public void updateAllCoords(int x1, int y1, int x2, int y2) {
         this.x1 = x1;

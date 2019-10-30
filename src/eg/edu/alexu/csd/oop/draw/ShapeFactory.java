@@ -94,6 +94,43 @@ public class ShapeFactory {
 		}
 		return currentShapeObject;
 	}
+	public static Shape getInstancee(Drawshape habd,ShapeTypes currentShapeType, int x, int y) {
+		Drawshape currentShapeObject = null;
+		switch (currentShapeType) {
+		case Line: {
+			habd = new Line(habd.getX1(), habd.getY1(),
+					x, y, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Rectangle: {
+			habd = new Rectangle(habd.getX1(), habd.getY1(),
+					x, y, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Square: {
+			habd = new Square(habd.getX1(), habd.getY1(),
+					x, y, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Ellipse: {
+			habd = new Ellipse(habd.getX1(), habd.getY1(),
+					x, y, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Circle: {
+			habd = new Circle(habd.getX1(), habd.getY1(),
+					x, y, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Triangle: {
+			habd = new Triangle(habd.getX1(), habd.getY1(),
+					x, y, g.ForeColor, g.BackColor);
+			break;
+		}
+
+		}
+		return habd;
+	}
 }
 
 
