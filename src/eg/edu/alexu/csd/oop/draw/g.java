@@ -167,15 +167,6 @@ public class g extends JFrame {
         });
         jToolBar1.add(jButton13);
 
-        
-        jButton16.setText("Copy");
-        jButton16.setBorderPainted(false);
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
-            }
-        });
-        jToolBar1.add(jButton16);
 
 
         jButton14.setText("Delete");
@@ -378,11 +369,6 @@ public class g extends JFrame {
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
         panel.setCurrentShapeType(ShapeTypes.Circle);
     }//GEN-LAST:event_jButton15ActionPerformed
-
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
-        panel.resetAll();
-        panel.copying = true;
-    }//GEN-LAST:event_jButton16ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         JFileChooser fileChooser = new JFileChooser();

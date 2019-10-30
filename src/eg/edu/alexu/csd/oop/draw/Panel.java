@@ -24,8 +24,8 @@ public class Panel extends JPanel{
 	public boolean resize = false,
 			recoloring = false,
 			moving = false,
-			deleting = false,
-			copying = false;
+			undo =false,
+			deleting = false;
 
 	public ShapeTypes currentShapeType;
 	public Shape currentShapeObject,copiedObject;
@@ -55,7 +55,7 @@ public class Panel extends JPanel{
 
 	public void resetAll() {
 		copiedObject = null;
-		moving = resize = recoloring = deleting = copying = false;
+		moving = resize = recoloring = deleting = undo = false;
 	}
 
 	public void setCurrentShapeType(ShapeTypes type) {
@@ -101,6 +101,7 @@ public class Panel extends JPanel{
 				}
 				copiedObject = null;
 			}*/
+			
 			if (moving || resize) {
 				currentShapeObject =  ((Draw) myEngine).findShape(event.getX(), event.getY(), true);
 				return;
@@ -109,7 +110,8 @@ public class Panel extends JPanel{
 				currentShapeObject = ((Draw) myEngine).findShape(event.getX(), event.getY(), true);
 				currentShapeObject = null;
 				repaint();
-			} else if (recoloring) {
+			} 
+			else if (recoloring) {
 				Drawshape s = ((Draw) myEngine).findShape(event.getX(), event.getY(), false);
 				if (s == null) {
 					return;

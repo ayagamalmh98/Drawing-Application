@@ -28,6 +28,7 @@ public class Draw implements DrawingEngine {
 	private List<Class<? extends Shape>> supportedShapes;
 	public Stack<ArrayList<Drawshape>> undoStack, redoStack;
 	public ArrayList<Drawshape> myShapes;
+	public ArrayList<Drawshape> undo;
 	public ArrayList<Shape> pluginShapes;
 	private Panel panel;
 
@@ -120,7 +121,9 @@ public class Draw implements DrawingEngine {
 	public void undo() {
 		if (!undoStack.isEmpty()) {
 			updateUndoStack();
-			myShapes = undoStack.pop();
+			undo = undoStack.pop();
+			myShapes = undoStack.peek();
+			System.out.println(undoStack);
 			panel.repaint();
 		}
 
