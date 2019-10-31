@@ -90,14 +90,14 @@ public class g extends JFrame {
 		jButton12 = new javax.swing.JButton();
 		toolBar2.add(jButton12);
 
-		jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eg/edu/alexu/csd/oop/img/resize1.png")));
+		jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eg/edu/alexu/csd/oop/img/resize.png")));
 		jButton12.setToolTipText("Resize");
 		jButton12.setBorderPainted(false);
 		jButton11 = new javax.swing.JButton();
 		toolBar2.add(jButton11);
 
         
-		jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eg/edu/alexu/csd/oop/img/drag.png")));
+		jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eg/edu/alexu/csd/oop/img/move.png")));
 		jButton11.setToolTipText("Move");
 		jButton11.setBorderPainted(false);
 		jButton7 = new javax.swing.JButton();
