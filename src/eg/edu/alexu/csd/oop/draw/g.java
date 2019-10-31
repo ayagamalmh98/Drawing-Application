@@ -32,6 +32,7 @@ public class g extends JFrame {
 	public static Color FillColor;
 
 	public g() {
+		setResizable(false);
 		setMinimumSize(new Dimension(850, 800));
 		initComponents();
 		Transparent = new Color(1f, 0f, 0f, .5f);
