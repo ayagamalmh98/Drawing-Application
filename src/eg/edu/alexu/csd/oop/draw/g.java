@@ -20,6 +20,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Dimension;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class g extends JFrame {
 
@@ -34,6 +36,7 @@ public class g extends JFrame {
 		initComponents();
 		Transparent = new Color(1f, 0f, 0f, .5f);
 		panel = new Panel();
+		panel.setBounds(0, 50, 1851, 740);
 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		Rectangle f = this.getBounds();
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -49,6 +52,7 @@ public class g extends JFrame {
 		panel.setLayout(gl_panel);
 
 		JToolBar toolBar = new JToolBar();
+		toolBar.setBounds(280, 0, 313, 50);
 		jButton10 = new javax.swing.JButton();
 		toolBar.add(jButton10);
 
@@ -74,6 +78,7 @@ public class g extends JFrame {
 		jButton13.setToolTipText("click on a shape on the canvas to fill it with the foreground color you pick.");
 
 		JToolBar toolBar2 = new JToolBar();
+		toolBar2.setBounds(600, 0, 300, 50);
 		jButton14 = new javax.swing.JButton();
 		toolBar2.add(jButton14);
 
@@ -108,26 +113,11 @@ public class g extends JFrame {
 		jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eg/edu/alexu/csd/oop/img/redo.png")));
 		jButton6.setToolTipText("Redo");
 		jButton6.setBorderPainted(false);
-		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addComponent(jToolBar1, GroupLayout.PREFERRED_SIZE, 300, Short.MAX_VALUE)
-						.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 300, Short.MAX_VALUE)
-						.addComponent(toolBar2, GroupLayout.PREFERRED_SIZE, 300, Short.MAX_VALUE)
-						.addGap(951))
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				);
-		groupLayout.setVerticalGroup(
-				groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(jToolBar1, GroupLayout.PREFERRED_SIZE, 50, Short.MAX_VALUE)
-								.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
-								.addComponent(toolBar2, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
-						.addComponent(panel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				);
-		getContentPane().setLayout(groupLayout);
+		getContentPane().setLayout(null);
+		getContentPane().add(panel);
+		getContentPane().add(jToolBar1);
+		getContentPane().add(toolBar);
+		getContentPane().add(toolBar2);
 		jButton6.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButton6ActionPerformed(evt);
@@ -185,13 +175,21 @@ public class g extends JFrame {
 
 		jMenuItem2 = new javax.swing.JMenuItem();
 		jToolBar1 = new javax.swing.JToolBar();
+		jToolBar1.setBounds(0, 0, 300, 50);
+		jToolBar1.setBackground(UIManager.getColor("scrollbar"));
 		jButton4 = new javax.swing.JButton();
+		jButton4.setMaximumSize(new Dimension(40, 9));
 		jButton4.setForeground(Color.BLACK);
 		jButton1 = new javax.swing.JButton();
+		jButton1.setMaximumSize(new Dimension(40, 9));
 		jButton15 = new javax.swing.JButton();
+		jButton15.setMaximumSize(new Dimension(40, 9));
 		jButton2 = new javax.swing.JButton();
+		jButton2.setMaximumSize(new Dimension(40, 9));
 		jButton3 = new javax.swing.JButton();
+		jButton3.setMaximumSize(new Dimension(40, 9));
 		jButton5 = new javax.swing.JButton();
+		jButton5.setMaximumSize(new Dimension(40, 9));
 		jButton16 = new javax.swing.JButton();
 		jButton8 = new javax.swing.JButton();
 		jMenuBar1 = new javax.swing.JMenuBar();
