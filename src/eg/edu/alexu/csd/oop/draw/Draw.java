@@ -58,7 +58,6 @@ public class Draw implements DrawingEngine {
 	@Override
 	public void addShape(Shape shape) {
 		this.myShapes.add((Drawshape) shape);
-		undot = true;
 	}
 
 	@Override
@@ -116,25 +115,24 @@ public class Draw implements DrawingEngine {
 		}
 		return null;
 	}
-	boolean undot = true ;
 
-	 @Override
-	    public void undo() {
-	        if (!undoStack.isEmpty()) {
-	            updateRedoStack();
-	            myShapes = undoStack.pop();
-	            panel.repaint();
-	        }
-	    }
+	@Override
+	public void undo() {
+		if (!undoStack.isEmpty()) {
+			updateRedoStack();
+			myShapes = undoStack.pop();
+			panel.repaint();
+		}
+	}
 
-	    @Override
-	    public void redo() {
-	        if (!redoStack.isEmpty()) {
-	            updateUndoStack();
-	            myShapes = redoStack.pop();
-	            panel.repaint();
-	        }
-	    }
+	@Override
+	public void redo() {
+		if (!redoStack.isEmpty()) {
+			updateUndoStack();
+			myShapes = redoStack.pop();
+			panel.repaint();
+		}
+	}
 
 	@Override
 	public void save(String path) {

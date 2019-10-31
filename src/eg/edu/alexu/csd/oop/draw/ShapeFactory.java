@@ -94,36 +94,40 @@ public class ShapeFactory {
 		}
 		return currentShapeObject;
 	}
+	
 	public static Shape getInstancee(Drawshape habd,ShapeTypes currentShapeType, int x, int y) {
 		Drawshape currentShapeObject = null;
+		double x1 = habd.getProperties().get("x1");
+		double y1 = habd.getProperties().get("y1");
+
 		switch (currentShapeType) {
 		case Line: {
-			habd = new Line(habd.getX1(), habd.getY1(),
+			habd = new Line((int)x1, (int)y1,
 					x, y, g.ForeColor, g.BackColor);
 			break;
 		}
 		case Rectangle: {
-			habd = new Rectangle(habd.getX1(), habd.getY1(),
+			habd = new Rectangle((int)x1, (int)y1,
 					x, y, g.ForeColor, g.BackColor);
 			break;
 		}
 		case Square: {
-			habd = new Square(habd.getX1(), habd.getY1(),
+			habd = new Square((int)x1, (int)y1,
 					x, y, g.ForeColor, g.BackColor);
 			break;
 		}
 		case Ellipse: {
-			habd = new Ellipse(habd.getX1(), habd.getY1(),
+			habd = new Ellipse((int)x1, (int)y1,
 					x, y, g.ForeColor, g.BackColor);
 			break;
 		}
 		case Circle: {
-			habd = new Circle(habd.getX1(), habd.getY1(),
+			habd = new Circle((int)x1, (int)y1,
 					x, y, g.ForeColor, g.BackColor);
 			break;
 		}
 		case Triangle: {
-			habd = new Triangle(habd.getX1(), habd.getY1(),
+			habd = new Triangle((int)x1, (int)y1,
 					x, y, g.ForeColor, g.BackColor);
 			break;
 		}
@@ -131,11 +135,7 @@ public class ShapeFactory {
 		}
 		return habd;
 	}
-	
-	
-	
-	
-	
+
 	public static Shape move(ShapeTypes currentShapeType, int x1, int x2,int y1,int y2) {
 		Drawshape currentShapeObject = null;
 		switch (currentShapeType) {
