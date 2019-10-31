@@ -65,7 +65,7 @@ public class g extends JFrame {
 
 
 		jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/eg/edu/alexu/csd/oop/img/brush.png")));
-		jButton9.setText("Front-Color");
+		jButton9.setText("Border-Color");
 		jButton9.setToolTipText("Pick a color for the border of the shape.");
 		jButton9.setBorderPainted(false);
 		jButton13 = new javax.swing.JButton();
