@@ -186,6 +186,8 @@ if (moving) {
 	currentShapeObject.setY1(currentShapeObject.getY1() + to_add_Y);
 	currentShapeObject.setX2(currentShapeObject.getX2() + to_add_X);
 	currentShapeObject.setY2(currentShapeObject.getY2() + to_add_Y); */
+	
+			currentShapeType=((Drawshape)currentShapeObject).getShapeType();
 	ShapeFactory s=new ShapeFactory();
 	currentShapeObject=s.getInstance( currentShapeType, old_x1 + to_add_X, old_y1 + to_add_Y);
 	currentShapeObject=s.getInstancee((Drawshape)currentShapeObject, currentShapeType, old_x2 + to_add_X, old_y2 + to_add_Y);				
