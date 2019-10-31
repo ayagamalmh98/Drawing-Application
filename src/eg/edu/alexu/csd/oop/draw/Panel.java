@@ -65,7 +65,7 @@ public class Panel extends JPanel{
 	}
 	
 	public boolean undoEmpty() {
-		return ((Draw) myEngine).undoStack.isEmpty();
+		return ((Draw) myEngine).redoStack.isEmpty();
 	}
 	
 	public boolean redoEmpty() {
@@ -77,7 +77,8 @@ public class Panel extends JPanel{
 
 		@Override
 		public void mousePressed(MouseEvent event) {
-			/*if (copying) {
+			/*
+			if (copying) {
 				copiedObject =  ((Draw) myEngine).findShape(event.getX(), event.getY(), false);
 				copying = false;
 				return;
@@ -100,7 +101,8 @@ public class Panel extends JPanel{
 					repaint();
 				}
 				copiedObject = null;
-			}*/
+			}
+			*/
 			
 			if (moving || resize) {
 				currentShapeObject =  ((Draw) myEngine).findShape(event.getX(), event.getY(), true);
@@ -162,32 +164,52 @@ public class Panel extends JPanel{
 				return;
 			}
 			
-			if (moving) {
+
+if (moving) {
+	int new_x = event.getX(), new_y = event.getY();
+	int old_x1 = currentShapeObject.getProperties().get("x1").intValue();
+	int old_y1 = currentShapeObject.getProperties().get("y1").intValue();
+	int old_x2 = currentShapeObject.getProperties().get("x2").intValue();
+	int old_y2 = currentShapeObject.getProperties().get("y2").intValue();
+	int to_add_X = new_x - old_x1;
+	int to_add_Y = new_y - old_y1;
+	
+	properties = currentShapeObject.getProperties();
+	properties.put("x1", (double) (old_x1 + to_add_X));
+	properties.put("y1", (double) (old_y1 + to_add_Y));
+	properties.put("x2", (double) (old_x2 + to_add_X));
+	properties.put("y2", (double) (old_y2 + to_add_Y));
+	currentShapeObject.setProperties(properties);
+	
+	/*
+	currentShapeObject.setX1(currentShapeObject.getX1() + to_add_X);
+	currentShapeObject.setY1(currentShapeObject.getY1() + to_add_Y);
+	currentShapeObject.setX2(currentShapeObject.getX2() + to_add_X);
+	currentShapeObject.setY2(currentShapeObject.getY2() + to_add_Y); */
+	ShapeFactory s=new ShapeFactory();
+	currentShapeObject=s.getInstance( currentShapeType, old_x1 + to_add_X, old_y1 + to_add_Y);
+	currentShapeObject=s.getInstancee((Drawshape)currentShapeObject, currentShapeType, old_x2 + to_add_X, old_y2 + to_add_Y);				
+	repaint();
+	return;
+}
+			if (resize) {
 				int new_x = event.getX(), new_y = event.getY();
-				int old_x1 = currentShapeObject.getProperties().get("x1").intValue();
-				int old_y1 = currentShapeObject.getProperties().get("y1").intValue();
+			
 				int old_x2 = currentShapeObject.getProperties().get("x2").intValue();
 				int old_y2 = currentShapeObject.getProperties().get("y2").intValue();
-				int to_add_X = new_x - old_x1;
-				int to_add_Y = new_y - old_y1;
+				//int to_add_X = new_x - old_x1;
+				//int to_add_Y = new_y - old_y1;
 				
 				properties = currentShapeObject.getProperties();
-				properties.put("x1", (double) (old_x1 + to_add_X));
-				properties.put("y1", (double) (old_y1 + to_add_Y));
-				properties.put("x2", (double) (old_x2 + to_add_X));
-				properties.put("y2", (double) (old_y2 + to_add_Y));
-				currentShapeObject.setProperties(properties);
 				
-				/*
-				currentShapeObject.setX1(currentShapeObject.getX1() + to_add_X);
-				currentShapeObject.setY1(currentShapeObject.getY1() + to_add_Y);
-				currentShapeObject.setX2(currentShapeObject.getX2() + to_add_X);
-				currentShapeObject.setY2(currentShapeObject.getY2() + to_add_Y); */
-				ShapeFactory s=new ShapeFactory();
-				currentShapeObject=s.getInstance( currentShapeType, old_x1 + to_add_X, old_y1 + to_add_Y);
-				currentShapeObject=s.getInstancee((Drawshape)currentShapeObject, currentShapeType, old_x2 + to_add_X, old_y2 + to_add_Y);				
+				properties.put("x2", (double) (new_x));
+				properties.put("y2", (double) (new_y));
+				currentShapeType=((Drawshape)currentShapeObject).getShapeType();
+				currentShapeObject.setProperties(properties);
+				currentShapeObject = (Drawshape) ShapeFactory.getInstancee((Drawshape) currentShapeObject,currentShapeType, event.getX(), event.getY());
 				repaint();
 				return;
+		
 			}
 			properties = currentShapeObject.getProperties();
 			properties.put("x2", (double) event.getX());

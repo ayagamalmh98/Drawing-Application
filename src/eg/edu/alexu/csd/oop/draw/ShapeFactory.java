@@ -131,6 +131,77 @@ public class ShapeFactory {
 		}
 		return habd;
 	}
+	
+	
+	
+	
+	
+	public static Shape move(ShapeTypes currentShapeType, int x1, int x2,int y1,int y2) {
+		Drawshape currentShapeObject = null;
+		switch (currentShapeType) {
+		case Line: {
+			currentShapeObject = new Line(x1, y1,
+					x2, y2, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Rectangle: {
+			currentShapeObject = new Rectangle(x1, y1,
+					x2, y2, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Square: {
+			currentShapeObject = new Square(x1, y1,
+					x2, y2, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Ellipse: {
+			currentShapeObject = new Ellipse(x1, y1,
+					x2, y2, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Circle: {
+			currentShapeObject = new Circle(x1, y1,
+					x2, y2, g.ForeColor, g.BackColor);
+			break;
+		}
+		case Triangle: {
+			currentShapeObject = new Triangle(x1, y1,
+					x2, y2, g.ForeColor, g.BackColor);
+			break;
+		}
+
+		}
+		return currentShapeObject;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

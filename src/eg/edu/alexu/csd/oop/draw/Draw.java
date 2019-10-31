@@ -118,36 +118,23 @@ public class Draw implements DrawingEngine {
 	}
 	boolean undot = true ;
 
-	@Override
-	public void undo() {
-		if (!undoStack.isEmpty()) {
-			undo=undoStack.peek();
-			myShapes.remove(myShapes.size()-1);
-			panel.repaint();
-		}
-			/*
-			if(undot) {
-				updateUndoStack();
-				undot =false;
-			}
-			undo = undoStack.pop();
-			myShapes = undoStack.peek();
-			System.out.println(undoStack);
-			panel.repaint();
-		}
-		*/
+	 @Override
+	    public void undo() {
+	        if (!undoStack.isEmpty()) {
+	            updateRedoStack();
+	            myShapes = undoStack.pop();
+	            panel.repaint();
+	        }
+	    }
 
-	}
-
-	@Override
-	public void redo() {
-		if (!redoStack.isEmpty()) {
-			updateUndoStack();
-			myShapes = redoStack.pop();
-			panel.repaint();
-		}
-
-	}
+	    @Override
+	    public void redo() {
+	        if (!redoStack.isEmpty()) {
+	            updateUndoStack();
+	            myShapes = redoStack.pop();
+	            panel.repaint();
+	        }
+	    }
 
 	@Override
 	public void save(String path) {
