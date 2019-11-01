@@ -25,8 +25,8 @@ import eg.edu.alexu.csd.oop.draw.Shapes.Square;
 import eg.edu.alexu.csd.oop.draw.Shapes.Triangle;
 
 
-public class XML implements ILoadSave  {
-	@Override
+public class XML  {
+	
 	public void Save(ArrayList<Drawshape> myShapes, String path) {
 		try {
 			DocumentBuilderFactory dFact = DocumentBuilderFactory.newInstance();
@@ -95,7 +95,7 @@ public class XML implements ILoadSave  {
 			ex.printStackTrace();
 		}
 	}
-	@Override
+	
 	public ArrayList<Drawshape> Load(String path) {
 		ArrayList<Drawshape> shapes = new ArrayList<>();
 		try {
