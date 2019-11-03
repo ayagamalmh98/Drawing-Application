@@ -394,8 +394,10 @@ public class SanityTest {
     @org.junit.Test
     public void testSaveAndLoadXML() {
         // Encoding ISO-8859-1
+    	
         DrawingEngine instance1 = (DrawingEngine)TestRunner.getImplementationInstanceForInterface(DrawingEngine.class);
         DrawingEngine instance2 = (DrawingEngine)TestRunner.getImplementationInstanceForInterface(DrawingEngine.class);
+        System.out.println(instance1);
         saveAndLoad(instance1, instance2, "XmL");
     }
 

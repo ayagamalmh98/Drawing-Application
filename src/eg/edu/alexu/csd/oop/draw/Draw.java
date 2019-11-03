@@ -3,16 +3,26 @@ package eg.edu.alexu.csd.oop.draw;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
+import java.util.regex.Pattern;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
 import javax.swing.JOptionPane;
 
 import org.json.JSONArray;
@@ -28,6 +38,7 @@ import eg.edu.alexu.csd.oop.draw.Shapes.Triangle;
 import eg.edu.alexu.csd.oop.draw.XML;
 
 import eg.edu.alexu.csd.oop.draw.Shapes.Rectangle;
+import eg.edu.alexu.csd.oop.draw.Shapes.RoundRectangle;
 
 
 public class Draw implements DrawingEngine {
@@ -40,6 +51,10 @@ public class Draw implements DrawingEngine {
 	public ArrayList<Drawshape> undo;
 	public ArrayList<Shape> pluginShapes;
 	private Panel panel;
+	private boolean plug = false;
+	
+	public Draw() {
+	}
 
 	public Draw(Panel panel) {
 		this.panel = panel;
@@ -66,7 +81,10 @@ public class Draw implements DrawingEngine {
 
 	@Override
 	public void addShape(Shape shape) {
-		this.myShapes.add((Drawshape) shape);
+		if(shape != null) {
+			this.myShapes.add((Drawshape) shape);
+		}
+		
 	}
 
 	@Override
@@ -144,24 +162,28 @@ public class Draw implements DrawingEngine {
 	}
 
 	@Override
-	 public void save(String path) {
-        if (path.toLowerCase().endsWith(".json")) {
-        	System.out.println(path);
-        	System.out.println(myShapes);
-            Save(myShapes, path);
-        } else if (path.toLowerCase().endsWith(".xml")) {
-        	System.out.println(xmlSaver);
-            xmlSaver.Save(myShapes, path);
-        } else {
-            JOptionPane.showMessageDialog(null, "Invalid Save format.");
-            throw new RuntimeException("Invalid format");
-        }
-    }
+	public void save(String path) {
+		if (path.toLowerCase().endsWith(".json")) {
+			System.out.println(path);
+			System.out.println(myShapes);
+			Save(myShapes, path);
+			//SaveJson save = new SaveJson();
+			//save.save(path, myShapes);
+		} else if (path.toLowerCase().endsWith(".xml")) {
+			System.out.println(xmlSaver);
+			xmlSaver.Save(myShapes, path);
+		} else {
+			JOptionPane.showMessageDialog(null, "Invalid Save format.");
+			throw new RuntimeException("Invalid format");
+		}
+	}
 
 	@Override
 	public void load(String path) {
 		if (path.toLowerCase().endsWith(".json")) {
 			myShapes = Load(path);
+		//	LoadJson load = new LoadJson();
+			//myShapes = load.load(path, supportedShapes);
 		} else if (path.toLowerCase().endsWith(".xml")) {
 			myShapes = xmlSaver.Load(path);
 		} else {
@@ -183,123 +205,124 @@ public class Draw implements DrawingEngine {
 		supportedShapes.add(Circle.class);
 		supportedShapes.add(Ellipse.class);
 		supportedShapes.add(Triangle.class);
+		supportedShapes.add(RoundRectangle.class);
 		return supportedShapes;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	@Override
+	public void installPluginShape(String jarPath) {
+		File file = new File(jarPath);
 
-		public void Save(ArrayList<Drawshape> myShapes, String path) {
-	        try {
-	            JSONObject obj = new JSONObject();
-	            JSONArray array = new JSONArray();
+		try {
+		    // Convert File to a URL
+		    URL url = file.toURI().toURL();          // file:/c:/myclasses/
+		    URL[] urls = new URL[]{url};
 
-	            for (Drawshape s : myShapes) {
-	                JSONObject ob = new JSONObject();
-	                ob.put("Type", ((Drawshape)s).getShapeType().toString());
-	                ob.put("X1", ((Drawshape)s).getX1());
-	                ob.put("Y1", ((Drawshape)s).getY1());
-	                ob.put("X2", ((Drawshape)s).getX2());
-	                ob.put("Y2", ((Drawshape)s).getY2());
-	                ob.put("ForeColor", Integer.toString(s.getColor().getRGB()));
-	                ob.put("BackColor", Integer.toString(s.getFillColor().getRGB()));
-	                array.put(ob);
-	            }
-	            obj.put("Shapes", array);
+		    // Create a new class loader with the directory
+		    ClassLoader cl = new URLClassLoader(urls);
 
-	            try (FileWriter file = new FileWriter(path)) {
-	                file.write(obj.toString());
-	                file.close();
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+		    // Load in the class; MyClass.class should be located in
+		    // the directory file:/c:/myclasses/com/mycompany
+		    Class cls = cl.loadClass("eg.edu.alexu.csd.oop.draw.Shapes.RoundRectangle");
+		} catch (MalformedURLException e) {
+		} catch (ClassNotFoundException e) {
+		}
+    }
 
-	    private static JSONObject parseJSONFile(String filename) throws JSONException, IOException {
-	        String content = new String(Files.readAllBytes(Paths.get(filename)));
-	        return new JSONObject(content);
-	    }
+	public void Save(ArrayList<Drawshape> myShapes, String path) {
+		try {
+			JSONObject obj = new JSONObject();
+			JSONArray array = new JSONArray();
 
-	    public ArrayList<Drawshape> Load(String fileDest) {
-	        ArrayList<Drawshape> shapes = new ArrayList<>();
-	        try {
-	            JSONObject jsonObject = parseJSONFile(fileDest);
-	            JSONArray arr = jsonObject.getJSONArray("Shapes");
-	            for (int i = 0; i < arr.length(); i++) {
-	                JSONObject j = arr.getJSONObject(i);
-	                ShapeTypes type = ShapeTypes.valueOf(j.getString("Type"));
-	                switch (type) {
-	                    case Ellipse:
-	                        shapes.add(new Ellipse(j.getInt("X1"),
-	                                j.getInt("Y1"),
-	                                j.getInt("X2"),
-	                                j.getInt("Y2"),
-	                                new Color(j.getInt("ForeColor")),
-	                                new Color(j.getInt("BackColor"))));
-	                        break;
+			for (Drawshape s : myShapes) {
+				JSONObject ob = new JSONObject();
+				ob.put("Type", ((Drawshape)s).getShapeType().toString());
+				ob.put("X1", ((Drawshape)s).getProperties().get("x1"));
+				ob.put("Y1", ((Drawshape)s).getProperties().get("y1"));
+				ob.put("X2", ((Drawshape)s).getProperties().get("x2"));
+				ob.put("Y2", ((Drawshape)s).getProperties().get("y2"));
+				ob.put("ForeColor", Integer.toString(s.getColor().getRGB()));
+				ob.put("BackColor", Integer.toString(s.getFillColor().getRGB()));
+				array.put(ob);
+			}
+			obj.put("Shapes", array);
 
-	                    case Triangle:
-	                        shapes.add(new Triangle(j.getInt("X1"),
-	                                j.getInt("Y1"),
-	                                j.getInt("X2"),
-	                                j.getInt("Y2"),
-	                                new Color(j.getInt("ForeColor")),
-	                                new Color(j.getInt("BackColor"))));
-	                        break;
+			try (FileWriter file = new FileWriter(path)) {
+				file.write(obj.toString());
+				file.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-	                    case Square:
-	                        shapes.add(new Square(j.getInt("X1"),
-	                                j.getInt("Y1"),
-	                                j.getInt("X2"),
-	                                j.getInt("Y2"),
-	                                new Color(j.getInt("ForeColor")),
-	                                new Color(j.getInt("BackColor"))));
-	                        break;
+	private static JSONObject parseJSONFile(String filename) throws JSONException, IOException {
+		String content = new String(Files.readAllBytes(Paths.get(filename)));
+		return new JSONObject(content);
+	}
 
-	                    case Rectangle:
-	                        shapes.add(new Rectangle(j.getInt("X1"),
-	                                j.getInt("Y1"),
-	                                j.getInt("X2"),
-	                                j.getInt("Y2"),
-	                                new Color(j.getInt("ForeColor")),
-	                                new Color(j.getInt("BackColor"))));
-	                        break;
+	public ArrayList<Drawshape> Load(String fileDest) {
+		ArrayList<Drawshape> shapes = new ArrayList<>();
+		try {
+			JSONObject jsonObject = parseJSONFile(fileDest);
+			JSONArray arr = jsonObject.getJSONArray("Shapes");
+			for (int i = 0; i < arr.length(); i++) {
+				JSONObject j = arr.getJSONObject(i);
+				ShapeTypes type = ShapeTypes.valueOf(j.getString("Type"));
+				switch (type) {
+				case Ellipse:
+					shapes.add(new Ellipse(j.getInt("X1"),
+							j.getInt("Y1"),
+							j.getInt("X2"),
+							j.getInt("Y2"),
+							new Color(j.getInt("ForeColor")),
+							new Color(j.getInt("BackColor"))));
+					break;
 
-	                    case Line:
-	                        shapes.add(new Line(j.getInt("X1"),
-	                                j.getInt("Y1"),
-	                                j.getInt("X2"),
-	                                j.getInt("Y2"),
-	                                new Color(j.getInt("ForeColor")),
-	                                new Color(j.getInt("BackColor"))));
-	                        break;
-	                }
-	            }
+				case Triangle:
+					shapes.add(new Triangle(j.getInt("X1"),
+							j.getInt("Y1"),
+							j.getInt("X2"),
+							j.getInt("Y2"),
+							new Color(j.getInt("ForeColor")),
+							new Color(j.getInt("BackColor"))));
+					break;
 
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	        return shapes;
-	    }
+				case Square:
+					shapes.add(new Square(j.getInt("X1"),
+							j.getInt("Y1"),
+							j.getInt("X2"),
+							j.getInt("Y2"),
+							new Color(j.getInt("ForeColor")),
+							new Color(j.getInt("BackColor"))));
+					break;
 
+				case Rectangle:
+					shapes.add(new Rectangle(j.getInt("X1"),
+							j.getInt("Y1"),
+							j.getInt("X2"),
+							j.getInt("Y2"),
+							new Color(j.getInt("ForeColor")),
+							new Color(j.getInt("BackColor"))));
+					break;
+
+				case Line:
+					shapes.add(new Line(j.getInt("X1"),
+							j.getInt("Y1"),
+							j.getInt("X2"),
+							j.getInt("Y2"),
+							new Color(j.getInt("ForeColor")),
+							new Color(j.getInt("BackColor"))));
+					break;
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return shapes;
+	}
 
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 }

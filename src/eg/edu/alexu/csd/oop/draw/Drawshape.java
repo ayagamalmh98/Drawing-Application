@@ -10,9 +10,22 @@ public abstract class Drawshape implements Shape {
 	private Map<String, Double> properties;
 	private Point position;
 	private Color backColor, foreColor;
-	private final ShapeTypes myShapeType;
+	public ShapeTypes myShapeType;
 	private int plugin;
-
+	
+	
+	public Drawshape() {
+		double type  = myShapeType.ordinal();
+		this.myShapeType = myShapeType.values()[(int)type];
+		properties = new HashMap<String, Double>();
+		properties.put("Type", myShapeType.ordinal() *1.0);
+		properties.put("foreColor", foreColor.getRGB() * 1.0);
+		properties.put("backColor", backColor.getRGB() * 1.0);
+		properties.put("x1", (double) x1);
+		properties.put("y1", (double) y1);
+		properties.put("x2", (double) x2);
+		properties.put("y2", (double) y2);
+	}
 
 	public Drawshape(ShapeTypes myShapeType, int x1, int y1, int x2, int y2, Color fore, Color back) {
 		this.x1 = x1;
@@ -23,6 +36,7 @@ public abstract class Drawshape implements Shape {
 		this.backColor = back;
 		this.myShapeType = myShapeType;
 		properties = new HashMap<String, Double>();
+		properties.put("Type", myShapeType.ordinal() *1.0);
 		properties.put("foreColor", foreColor.getRGB() * 1.0);
 		properties.put("backColor", backColor.getRGB() * 1.0);
 		properties.put("x1", (double) x1);
@@ -39,6 +53,8 @@ public abstract class Drawshape implements Shape {
         this.foreColor = fore;
         this.backColor = back;
         this.myShapeType = myShapeType;
+        position.x = x1;
+        position.y = y1;
         properties = new HashMap<String, Double>();
 		properties.put("foreColor", foreColor.getRGB() * 1.0);
 		properties.put("backColor", backColor.getRGB() * 1.0);
@@ -49,10 +65,12 @@ public abstract class Drawshape implements Shape {
         this.plugin = plugin;
     }
 	
+	
+	
+
 	public int getPluginId() {
         return plugin;
     }
-	
 	
 	public void setPosition(Point position) {
 		this.position.x = (int) x1;
@@ -64,6 +82,13 @@ public abstract class Drawshape implements Shape {
 	}
 
 	public void setProperties(Map<String, Double> properties) {
+		properties.put("Type", myShapeType.ordinal() *1.0);
+		properties.put("foreColor", foreColor.getRGB() * 1.0);
+		properties.put("backColor", backColor.getRGB() * 1.0);
+		properties.put("x1", (double) x1);
+		properties.put("y1", (double) y1);
+		properties.put("x2", (double) x2);
+		properties.put("y2", (double) y2);
 		this.properties = properties;
 	}
 
@@ -88,39 +113,7 @@ public abstract class Drawshape implements Shape {
     public ShapeTypes getShapeType() {
         return this.myShapeType;
     }
-    public int getX1() {
-        return (int) x1;
-    }
-
-    public void setX1(int x1) {
-        this.x1 = x1;
-    }
-
-    public int getY1() {
-        return (int) y1;
-    }
-
-    public void setY1(int y1) {
-        this.y1 = y1;
-    }
-	
-	public int getX2() {
-        return (int) x2;
-    }
-
-    public void setX2(int x2) {
-        this.x2 = x2;
-    }
-
-    public int getY2() {
-        return (int) y2;
-    }
-
-    public void setY2(int y2) {
-        this.y2 = y2;
-    }
-    
-	
+  
 	public void updateAllCoords(int x1, int y1, int x2, int y2) {
         this.x1 = x1;
         this.x2 = x2;

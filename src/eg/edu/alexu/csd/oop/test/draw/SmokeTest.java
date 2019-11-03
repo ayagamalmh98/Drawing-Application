@@ -43,7 +43,9 @@ public class SmokeTest {
     
     @org.junit.Test
     public void testUpdateShape() {
+    	
         DrawingEngine instance = (DrawingEngine)TestRunner.getImplementationInstanceForInterface(DrawingEngine.class);
+   
         try {
             instance.updateShape(new DummyShape(), new DummyShape());
             fail("Engine accepts updating non existing shape");
